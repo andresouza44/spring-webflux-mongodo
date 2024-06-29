@@ -30,15 +30,15 @@ public class UserService {
         User entity = new User();
         copyDtoToEntity(dto, entity);
         Mono<UserDTO> userDTOMono = repository.save(entity).map(user -> new UserDTO(user));
-        return  userDTOMono;
+        return userDTOMono;
     }
 
-    public Mono<UserDTO> update(String id, UserDTO userDTO){
+    public Mono<UserDTO> update(String id, UserDTO userDTO) {
         return repository.findById(id)
                 .flatMap(user -> {
                     user.setName(userDTO.getName());
                     user.setEmail(userDTO.getEmail());
-                    return  repository.save(user);
+                    return repository.save(user);
                 })
                 .map(user -> new UserDTO(user))
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("User not found")));
@@ -49,5 +49,9 @@ public class UserService {
         entity.setName(dto.getName());
     }
 
-
+    public Mono<Void> delete(String id) {
+        return repository.findById(id)
+                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Resource not found")))
+                .flatMap(user -> repository.delete(user));
+    }
 }
