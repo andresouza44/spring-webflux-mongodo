@@ -47,8 +47,6 @@ public class SeedingDatabase implements CommandLineRunner {
 		insertPosts.subscribe();
 
 
-
-
 	}
 
 //		post1.addComment("Boa viagem mano!", Instant.parse("2022-11-21T18:52:24.00Z"), alex.getId(), alex.getName());
